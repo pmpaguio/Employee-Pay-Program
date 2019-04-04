@@ -2,55 +2,44 @@
 #include <iomanip>
 #include <cstring>
 #include <fstream>
+#include <vector>
 #include "person.cpp"
 using namespace std;
 
-void readData(Person empArr[20], int &arrSize)
+void readData(vector<Person> &empVect)
 {
 	ifstream theFile;
 	theFile.open("input.txt");
 	string inLine;
 
-	int N = 0;
 	string fName, lName;
 	float pRate, wHours;
 	while (theFile)
 	{
 		theFile >> fName >> lName >> wHours >> pRate;
-		empArr[N].setFirstName(fName);
-		empArr[N].setLastName(lName);
-		empArr[N].setPayRate(pRate);
-		empArr[N].setHoursWorked(wHours);
-		N++;
+		if (!theFile)
+			break;
+		empVect.emplace_back(fName, lName, pRate, wHours);
 	}
-	arrSize = N-1;
 	theFile.close();
 }
 
-void writeData (Person empArr[20], int &arrSize)
+void writeData (vector<Person> &empVect)
 {
 	ofstream theFile;
 	theFile.open("output.txt");
 	cout << fixed << showpoint << setprecision(2);
-	for (int i = 0; i < arrSize; i++)
+	for (int i = 0; i < empVect.size(); i++)
 	{
-		theFile << empArr[i].fullName() << " " << empArr[i].totalPay() << endl;
+		theFile << empVect.at(i).fullName() << " " << empVect.at(i).totalPay() << endl;
 	}
 	theFile.close();
 }
 
 int main()
 {
-	int arrSize = 0;
-	Person employees[20];
-	readData(employees, arrSize);
-	cout << fixed << showpoint << setprecision(2);
-	for (int i = 0; i < arrSize; i++)
-	{
-		cout << employees[i].getFirstName() << " " << employees[i].getLastName() << " " <<
-			employees[i].getPayRate() << " " <<  employees[i].getHoursWorked() << endl;
-	}
-	writeData(employees, arrSize);
-
+	vector<Person> employees;
+	readData(employees);
+	writeData(employees);
 	return 0;
 }
