@@ -5,6 +5,15 @@ Person::Person()
 
 }
 
+Person::Person(string firstName, string lastName,
+	             float payRate, float hoursWorked)
+{
+  this->firstName = firstName;
+	this->lastName = lastName;
+	this->payRate = payRate;
+	this->hoursWorked = hoursWorked;
+}
+
 void Person::setLastName(string lName)
 {
 	lastName = lName;
